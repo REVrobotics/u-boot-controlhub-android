@@ -363,6 +363,7 @@ void board_fbt_run_recovery_wipe_data(void)
 #ifdef CONFIG_RK_POWER
 static void board_fbt_low_power_check(void)
 {
+	udelay(100000); /* 100 ms */
 	if (is_power_extreme_low()) {
 		while (is_charging()) {
 			FBTERR("extreme low power, charging...\n");
@@ -399,13 +400,14 @@ void get_exit_uboot_charge_level(void)
 
 static void board_fbt_low_power_off(void)
 {
+	int i = 0;
 	if (is_power_low()) {
 		if (!is_charging()) {
 			FBTERR("low power, shutting down...\n");
 #ifdef CONFIG_LCD
 #ifdef CONFIG_RK_FB
 			//TODO: show warning logo.
-			show_resource_image("images/battery_fail.bmp");
+			show_resource_image("battery_fail.bmp");
 
 			lcd_standby(0);
 			//TODO: set backlight in better way.
@@ -413,8 +415,8 @@ static void board_fbt_low_power_off(void)
 #ifdef CONFIG_RK_PWM_BL
 			rk_pwm_bl_config(CONFIG_BRIGHTNESS_DIM);
 #endif
-
-			udelay(1000000); /* 1 sec */
+			while(i++ < 8) // show battery
+				udelay(1000000); /* 1 sec */
 
 #ifdef CONFIG_RK_PWM_BL
 			rk_pwm_bl_config(0);

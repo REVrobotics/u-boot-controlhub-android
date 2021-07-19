@@ -143,11 +143,10 @@
 
 #if defined(CONFIG_RKCHIP_RK322XH)
 	#undef CONFIG_RK_MCU
-
 	#define CONFIG_SECUREBOOT_CRYPTO
 	#define CONFIG_SECUREBOOT_SHA256
 	#define CONFIG_MERGER_MINILOADER
-
+	#undef CONFIG_RK3328_EMMC_UART_DEBUG
 	#undef CONFIG_RK_TRUSTOS
 
 	#undef CONFIG_RK_FLASH_BOOT_EN
@@ -199,7 +198,13 @@
 #endif /* CONFIG_SECUREBOOT_CRYPTO */
 
 /* mod it to enable console commands.	*/
-#define CONFIG_BOOTDELAY		0
+
+#ifdef CONFIG_RK3328_EMMC_UART_DEBUG
+#define CONFIG_BOOTDELAY	2
+#undef CONFIG_RK_SDCARD_BOOT_EN
+#else
+#define CONFIG_BOOTDELAY    0
+#endif
 
 /* efuse version */
 #ifdef CONFIG_RK_EFUSE
@@ -375,7 +380,7 @@
 #define CONFIG_RK3399_EDP
 #endif
 
-#undef CONFIG_UBOOT_CHARGE
+#define CONFIG_UBOOT_CHARGE
 
 #else
 
@@ -402,7 +407,6 @@
 
 /* more config for charge */
 #ifdef CONFIG_UBOOT_CHARGE
-
 #define CONFIG_CMD_CHARGE_ANIM
 #define CONFIG_CHARGE_DEEP_SLEEP
 
@@ -426,8 +430,8 @@
 #define CONFIG_POWER_CHARGER
 #endif /* CONFIG_PRODUCT_BOX */
 
-#define CONFIG_SCREEN_ON_VOL_THRESD	0
-#define CONFIG_SYSTEM_ON_VOL_THRESD	0
+#define CONFIG_SCREEN_ON_VOL_THRESD	3370
+#define CONFIG_SYSTEM_ON_VOL_THRESD	3470
 
 /******** pwm regulator driver ********/
 #define CONFIG_POWER_PWM_REGULATOR
@@ -435,7 +439,7 @@
 /******** pmic driver ********/
 #ifdef CONFIG_POWER_PMIC
 #undef CONFIG_POWER_RK_SAMPLE
-#define CONFIG_POWER_RICOH619
+#define CONFIG_POWER_FG_CW201X
 #define CONFIG_POWER_RK808
 #define CONFIG_POWER_RK818
 #define CONFIG_POWER_ACT8846

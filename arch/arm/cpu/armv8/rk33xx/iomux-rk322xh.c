@@ -100,6 +100,10 @@ static void rk_spi_iomux_config(int spi_id)
 
 static void rk_uart_iomux_config(int uart_id)
 {
+#ifdef CONFIG_RK3328_EMMC_UART_DEBUG
+	if(uart_id == RK_UART_DBG_IOMUX)
+		grf_writel(((grf_readl(GRF_COM_IOMUX) & ~0x3) | 0x00030000),GRF_COM_IOMUX);
+#endif
 	u32 dbg_sel = (grf_readl(GRF_COM_IOMUX) >> 0) & 0x3;
 
 	switch (uart_id) {

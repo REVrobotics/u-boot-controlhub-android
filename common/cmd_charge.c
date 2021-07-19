@@ -257,7 +257,7 @@ int handle_exit_charge(void) {
 		LOGE("low power, unable to boot");
 
 		//TODO:show warning logo.
-		show_resource_image("images/battery_fail.bmp");
+		show_resource_image("battery_fail.bmp");
 
 		udelay(1000000);//1 sec.
 		return -1;//unable to boot, so continue charging.
